@@ -3,7 +3,7 @@
 const searchInput = document.querySelector(".searchbar")
 const searchBtn = document.querySelector(".button")
 const moviePoster = document.querySelector(".moviePoster")
-const movetitle = document.querySelector(".movieTitle")
+const movieTitle = document.querySelector(".movieTitle")
 const movieDesc = document.querySelector(".movieDesc")
 const wikiDesc = document.querySelector(".wikiDesc")
 const movieRating = document.querySelector(".movieRating")
@@ -99,6 +99,7 @@ function fetchRecentTitle(title, id, date){
 }
 
 function ombdGenerate(data){
+  movieTitle.innerText = data.Title
   moviePoster.src = data.Poster
   movieDesc.innerText = data.Plot
 
