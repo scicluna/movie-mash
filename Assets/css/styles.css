@@ -11,30 +11,50 @@ header, footer {
 }
 
 #movieSearch {
-    display: ;
-    position: relative;
-    top: 20%;
+    display: flex;
+    justify-content: center;
 }
 
 #movieInfo {
-    display: ;
+    display: flex;
+    width: 100vw;
 }
 
 .moviePoster {
-    padding: 20px;
+    width: 20vw;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .movieTitle {
-    display: inline;
-    position: absolute;
-    left: 45%;
+    text-align: center;
 }
 
 .movieDesc {
-    display: inline;
-    position: absolute;
-    left: 25%;
-    top: 30%;
+    width: 70vw;
+}
+
+.movieRating {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+}
+
+.movieRating li {
+    padding-left: 5px;
+}
+
+.searchbar {
+    width: 90vw;
+}
+
+.button {
+    width: 10vw;
+}
+
+#descriptions {
+    display: flex;
+    flex-direction: column;
 }
 
 footer {
