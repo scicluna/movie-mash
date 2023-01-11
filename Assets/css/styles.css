@@ -1,6 +1,7 @@
 body {
     background-color: #1E4A55;
-    max-width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
     overflow-wrap: break-word;
     box-sizing: border-box;
 }
@@ -58,6 +59,7 @@ header, footer {
 #descriptions {
     display: flex;
     flex-direction: column;
+    width: 65vw;
 }
 
 #ytReviews {
