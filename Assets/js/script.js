@@ -18,6 +18,8 @@ function movieSearch(e){
     let targetSearch = searchInput.value
     requestUrl = `http://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
 
+    //guard for nonsense words
+
 //API EXAMPLES
 //let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
 //let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
@@ -46,6 +48,8 @@ function findRecentTitle(data){
     let imbdID;
     let mostRecentYear = 0
 
+
+    //will need a guard preventing it from searching for future movies
     for (let i=0; i<data.Search.length; i++){
         if (data.Search[i].Year > mostRecentYear){
             imbdID = data.Search[i].imdbID
@@ -75,10 +79,66 @@ function fetchRecentTitle(title, id, date){
 
   });
 
+  wikiSearch(title, date)
+
     //Our API search for wikipedia using the movie title//Add url to wiki search
     //need wiki search url in addition that lets us query wikipedia and search for the film
     //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
-    let wikiUrl = `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${title}&origin=*`
+
+  //Insert youtube stuff here
+
+}
+
+function ombdGenerate(data){
+  movieTitle.innerText = data.Title
+  moviePoster.src = data.Poster
+  movieDesc.innerText = data.Plot
+
+  movieRating.innerHTML = ""
+  for (let i=0; i<data.Ratings.length; i++){
+    let newLi = document.createElement("li")
+    let newLiContent = `<b>${data.Ratings[i].Source}</b> ${data.Ratings[i].Value}`
+    newLi.innerHTML = newLiContent
+    movieRating.appendChild(newLi)
+  }
+  
+}
+
+function wikiSearch(title, date){
+
+  let wikiSearching = `http://en.wikipedia.org/w/api.php?action=opensearch&search=${title} ${date}{&format=json&origin=*`
+  console.log(wikiSearching)
+
+  fetch(wikiSearching)
+  .then(function (response) {
+    return response.json();
+  })
+  .then(function (data) {
+    console.log(data);
+
+    let article;
+
+    //if its a german movie it blows up the entire website
+    if (data[1][0] === undefined){
+      wikiSearch(title, "")
+      return
+    }
+
+    for (let i=0; i<data.length; i++){
+      if (data[i][0].includes("film")){
+        article = data[i][0]
+        i=data.length
+      } else article = data[1][0]
+    }
+
+    wikiGet(article)
+
+  });
+
+}
+
+function wikiGet(article){
+  let wikiUrl = `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${article}&origin=*`
 
     fetch(wikiUrl)
   .then(function (response) {
@@ -90,27 +150,11 @@ function fetchRecentTitle(title, id, date){
     //gives us a wikipedia extract
     //build wikipedia algorithm that searches out the film tag and prefers that if available
     let wikiID = Object.getOwnPropertyNames(data.query.pages)[0]
-    console.log(data.query.pages[wikiID].extract)
     //sketchy, but can be used as a "click for more" type button
-    let wikiLink = `en.wikipedia.org/wiki/${title}`
+    let wikiLink = `en.wikipedia.org/wiki/${article}`
     console.log(wikiLink)
     //write wiki extract to screen with click for more link
+    //link not working yet
+    wikiDesc.innerHTML = `${data.query.pages[wikiID].extract} <a href="${wikiLink}">${wikiLink}</a>`
   });
-
-  //Insert youtube stuff here
-
-}
-
-function ombdGenerate(data){
-  movieTitle.innerText = data.Title
-  moviePoster.src = data.Poster
-  movieDesc.innerText = data.Plot
-
-  for (let i=0; i<data.Ratings.length; i++){
-    let newLi = document.createElement("li")
-    let newLiContent = `<b>${data.Ratings[i].Source}</b> ${data.Ratings[i].Value}`
-    newLi.innerHTML = newLiContent
-    movieRating.appendChild(newLi)
-  }
-  
 }
