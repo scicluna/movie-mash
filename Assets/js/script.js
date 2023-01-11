@@ -31,6 +31,9 @@ fetch(requestUrl)
   .then(function (data) {
     console.log(data);
     findRecentTitle(data)
+    //unhide movie title and movie info.
+    document.querySelector(".movieTitle").style.display = "flex";
+    document.querySelector("#movieInfo").style.display = "flex";
   });
 
 
