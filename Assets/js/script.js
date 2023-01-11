@@ -31,14 +31,33 @@ function movieSearch(e){
     })
     .then(function (data) {
       console.log(data);
-      //safeguard for nonsense words
-      if (data.Response == "False"){
+            //safeguard for nonsense words
+      if (data.Error == "Too many results."){
+        let tryUrl = `http://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
+        fetch(tryUrl)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+          let title = data.Title
+          let imbd = data.imdbID
+          let year = data.Year
+          movieTitle.style.opacity = "100";
+          movieInfo.style.opacity = "100";
+          fetchRecentTitle(title, imbd, year)
+        });
+        return
+      }
+      if (data.Response == "False" && data.Error != "Too many results."){
         console.log("working");
         movieTitle.innerText = "No Movie Found!";
         movieTitle.style.opacity = "100";
         return;
       }
-      findRecentTitle(data)
+
+
+    findRecentTitle(data)
     //unhide movie title and movie info.
     movieTitle.style.opacity = "100";
     movieInfo.style.opacity = "100";
@@ -92,6 +111,34 @@ function fetchRecentTitle(title, id, date){
     //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
 
   //Insert youtube stuff here
+    //API key from youtube
+    let apiKey = "AIzaSyDBUWvIcwaPDXaZkjdnaNpmBzVa821rFFc"
+
+        let search = title + date
+        console.log("working")
+        videoSearch(apiKey,search,5,)
+        
+    //pulls data from search
+  function videoSearch(apiKey,search,maxResults,){
+    $.get("https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&type=video&part=snippet&maxResults=" + maxResults + "&q=" + search,(data) => {
+        console.log(data);
+
+        let video = '';
+        // Removes videos after each search
+            $("#videos").html("");
+        data.items.forEach(item => {
+
+          //adds videos in separate ifram
+            video = `
+            <iframe width="420" height="315" src="http://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+            `
+
+            $("#videos").append(video)
+        });
+    })
+
+  }
+
 
 }
 
