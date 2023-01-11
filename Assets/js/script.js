@@ -18,24 +18,30 @@ function movieSearch(e){
     let targetSearch = searchInput.value
     requestUrl = `http://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
 
-    //guard for nonsense words
-
-//API EXAMPLES
-//let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
-//let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
-//let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
-//let requestUrl =  "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Hulk&origin=*"
-
-fetch(requestUrl)
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
-    console.log(data);
-    findRecentTitle(data)
+    
+    //API EXAMPLES
+    //let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
+    //let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
+    //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
+    //let requestUrl =  "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Hulk&origin=*"
+    
+    fetch(requestUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      //safeguard for nonsense words
+      if (data.Response == "False"){
+        console.log("working");
+        movieTitle.innerText = "No Movie Found!";
+        movieTitle.style.opacity = "100";
+        return;
+      }
+      findRecentTitle(data)
     //unhide movie title and movie info.
-    document.querySelector(".movieTitle").style.opacity = "100";
-    document.querySelector("#movieInfo").style.opacity = "100";
+    movieTitle.style.opacity = "100";
+    movieInfo.style.opacity = "100";
   });
 
 
