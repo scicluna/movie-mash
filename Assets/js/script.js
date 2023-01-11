@@ -124,32 +124,32 @@ function wikiSearch(title, date){
 
     let article;
 
-    //if there's no wikipedia article, everything breaks.
     if (data[1][0] === undefined && (data[0].includes("20") || data[0].includes("19"))){
       wikiSearch(title, "")
       return
     }
 
-    console.log(data[1][0])
     if(data[1][0] === undefined){
       wikiDesc.innerText = "There are no wikipedia entries for this movie"
       return
     }
 
     for (let i=0; i<data.length; i++){
-      if (data[i][0].includes("film")){
+      if (data[i][0].includes("film") || data[i][0].includes("movie")){
         article = data[i][0]
         i=data.length
       } else article = data[1][0]
     }
 
-    wikiGet(article)
+    let link = data[3][0]
+
+    wikiGet(article, link)
 
   });
 
 }
 
-function wikiGet(article){
+function wikiGet(article, link){
   let wikiUrl = `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${article}&origin=*`
 
     fetch(wikiUrl)
@@ -160,13 +160,11 @@ function wikiGet(article){
     //do things with the data here
     console.log(data);
     //gives us a wikipedia extract
-    //build wikipedia algorithm that searches out the film tag and prefers that if available
     let wikiID = Object.getOwnPropertyNames(data.query.pages)[0]
     //sketchy, but can be used as a "click for more" type button
     let wikiLink = `en.wikipedia.org/wiki/${article}`
     console.log(wikiLink)
     //write wiki extract to screen with click for more link
-    //link not working yet
-    wikiDesc.innerHTML = `${data.query.pages[wikiID].extract} <a href="${wikiLink}">${wikiLink}</a>`
+    wikiDesc.innerHTML = `${data.query.pages[wikiID].extract} <a href="${link}" target="_blank">${wikiLink}</a>`
   });
 }
