@@ -51,7 +51,7 @@ function findRecentTitle(data){
 
     //will need a guard preventing it from searching for future movies
     for (let i=0; i<data.Search.length; i++){
-        if (data.Search[i].Year > mostRecentYear){
+        if (data.Search[i].Year > mostRecentYear && data.Search[i].Year < 2024){
             imbdID = data.Search[i].imdbID
             mostRecentTitle = data.Search[i].Title
             mostRecentYear = data.Search[i].Year
@@ -118,9 +118,15 @@ function wikiSearch(title, date){
 
     let article;
 
-    //if its a german movie it blows up the entire website
-    if (data[1][0] === undefined){
+    //if there's no wikipedia article, everything breaks.
+    if (data[1][0] === undefined && (data[0].includes("20") || data[0].includes("19"))){
       wikiSearch(title, "")
+      return
+    }
+
+    console.log(data[1][0])
+    if(data[1][0] === undefined){
+      wikiDesc.innerText = "There are no wikipedia entries for this movie"
       return
     }
 
