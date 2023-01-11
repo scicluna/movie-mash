@@ -32,8 +32,8 @@ fetch(requestUrl)
     console.log(data);
     findRecentTitle(data)
     //unhide movie title and movie info.
-    document.querySelector(".movieTitle").style.display = "flex";
-    document.querySelector("#movieInfo").style.display = "flex";
+    document.querySelector(".movieTitle").style.opacity = "100";
+    document.querySelector("#movieInfo").style.opacity = "100";
   });
 
 
