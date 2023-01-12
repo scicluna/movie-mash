@@ -31,7 +31,7 @@ function movieSearch(e){
     })
     .then(function (data) {
       console.log(data);
-            //safeguard for nonsense words
+      //safeguard for nonsense words
       if (data.Error == "Too many results."){
         let tryUrl = `http://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
         fetch(tryUrl)
@@ -53,6 +53,8 @@ function movieSearch(e){
         console.log("working");
         movieTitle.innerText = "No Movie Found!";
         movieTitle.style.opacity = "100";
+        movieInfo.style.opacity = "0";
+        movieRating.style.opacity = "0";
         return;
       }
 
@@ -61,6 +63,7 @@ function movieSearch(e){
     //unhide movie title and movie info.
     movieTitle.style.opacity = "100";
     movieInfo.style.opacity = "100";
+    movieRating.style.opacity = "100";
   });
 
 
