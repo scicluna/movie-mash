@@ -5,6 +5,7 @@ const searchBtn = document.querySelector(".button")
 const moviePoster = document.querySelector(".moviePoster")
 const movieTitle = document.querySelector(".movieTitle")
 const movieDesc = document.querySelector(".movieDesc")
+const movieCast = document.querySelector(".movieCast")
 const wikiDesc = document.querySelector(".wikiDesc")
 const movieRating = document.querySelector(".movieRating")
 
@@ -146,6 +147,8 @@ function ombdGenerate(data){
   movieTitle.innerText = data.Title
   moviePoster.src = data.Poster
   movieDesc.innerText = data.Plot
+  // Added the actors
+  movieCast.innerText = "Cast: " + data.Actors
 
   movieRating.innerHTML = ""
   for (let i=0; i<data.Ratings.length; i++){
