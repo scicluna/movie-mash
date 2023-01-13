@@ -18,12 +18,15 @@ h2{
     color: rgba(255, 255, 255, 0.617);
 }
 
-header, footer {
-    background-color: #1e554e;
-    display:flex;
+header {
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+header, footer {
+    background-color: #1e554e;
+    display:flex;
 }
 
 #movieSearch {
@@ -85,5 +88,23 @@ header, footer {
 
 footer {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    flex-direction: row;
   }
+
+
+#githubLink {
+    padding-left: 10px;
+    padding-top: 10px;
+    height: 100px;
+    width: 100px;
+}
+
+.githubProfiles {
+    display: flex;
+    align-items: center;
+}
+
+.githubProfiles>a{
+    padding-left: 10px;
+}
