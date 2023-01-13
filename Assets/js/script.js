@@ -1,4 +1,3 @@
-// Fetch based on search data -> search data will give us the name of the movie -> search omdb for specific reviews && wikipedia for exerp
 //Select DOMS
 const searchInput = document.querySelector(".searchbar")
 const searchBtn = document.querySelector(".button")
@@ -14,6 +13,8 @@ var mytitle = JSON.parse(localStorage.getItem("myTitle"));
 if (mytitle==undefined){
   mytitle =[];
 }
+let wikiRetry = false
+
 //Init Button
 searchBtn.addEventListener("click", movieSearch)
 
@@ -73,16 +74,20 @@ function movieSearch(e){
           console.log("working");
           movieTitle.innerText = "No Movie Found!";
           movieTitle.style.opacity = "100";
+          movieInfo.style.opacity = "0";
+          movieRating.style.opacity = "0";
           return;
         }
 
 
-        findRecentTitle(data)
-        //unhide movie title and movie info.
-        movieTitle.style.opacity = "100";
-        movieInfo.style.opacity = "100";
-      });
-    }
+
+    //unhide movie title and movie info.
+    movieTitle.style.opacity = "100";
+    movieInfo.style.opacity = "100";
+    movieRating.style.opacity = "100";
+    findRecentTitle(data)
+  });
+
 
 }
 
@@ -93,8 +98,6 @@ function findRecentTitle(data){
     let imbdID;
     let mostRecentYear = 0
 
-
-    //will need a guard preventing it from searching for future movies
     for (let i=0; i<data.Search.length; i++){
         if (data.Search[i].Year > mostRecentYear && data.Search[i].Year < 2024){
             imbdID = data.Search[i].imdbID
@@ -117,20 +120,14 @@ function fetchRecentTitle(title, id, date){
     return response.json();
   })
   .then(function (data) {
-    console.log(data);
-    //do things with the data here
-    //etc... this object has like everything about the movie
+
     ombdGenerate(data)
 
   });
 
+  wikiRetry = false
   wikiSearch(title, date)
 
-    //Our API search for wikipedia using the movie title//Add url to wiki search
-    //need wiki search url in addition that lets us query wikipedia and search for the film
-    //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
-
-  //Insert youtube stuff here
     //API key from youtube
     let apiKey = "AIzaSyDBUWvIcwaPDXaZkjdnaNpmBzVa821rFFc"
 
@@ -170,7 +167,7 @@ function ombdGenerate(data){
   moviePoster.src = data.Poster
   movieDesc.innerText = data.Plot
   // Added the actors
-  movieCast.innerText = "Cast: " + data.Actors
+  movieCast.innerHTML = `<b>Cast:</b> ${data.Actors}`
 
   movieRating.innerHTML = ""
   for (let i=0; i<data.Ratings.length; i++){
@@ -181,6 +178,7 @@ function ombdGenerate(data){
   }
   
 }
+
 
 function wikiSearch(title, date){
 
@@ -196,7 +194,8 @@ function wikiSearch(title, date){
 
     let article;
 
-    if (data[1][0] === undefined && (data[0].includes("20") || data[0].includes("19"))){
+    if (data[1][0] === undefined && (data[0].includes("20") || data[0].includes("19")) && wikiRetry === false){
+      wikiRetry = true
       wikiSearch(title, "")
       return
     }
@@ -205,6 +204,15 @@ function wikiSearch(title, date){
       wikiDesc.innerText = "There are no wikipedia entries for this movie"
       return
     }
+
+    if(!data[1][0].includes(title) && wikiRetry === false){
+      console.log("no match")
+      wikiRetry = true
+      wikiSearch(title, "")
+      return
+    }
+
+
 
     for (let i=0; i<data.length; i++){
       if (data[i][0].includes("film") || data[i][0].includes("movie")){
