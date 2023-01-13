@@ -1,9 +1,21 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.617);
+}
+
 body {
     background-color: #1E4A55;
-    max-width: 100vw;
-    overflow-x: hidden;
-    overflow-wrap: break-word;
     box-sizing: border-box;
+    height: 100vh;
+    overflow-x: hidden;
+}
+
+h2{
+    color: rgba(255, 255, 255, 0.617);
 }
 
 header, footer {
@@ -71,5 +83,4 @@ header, footer {
 footer {
     display: flex;
     flex-direction: column;
-    margin-top: 100vh;
   }
