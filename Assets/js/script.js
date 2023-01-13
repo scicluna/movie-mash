@@ -29,7 +29,7 @@ function movieSearch(e){
     fetch(requestUrl)
     .then(function (response) {
       return response.json();
-    })W
+    })
     .then(function (data) {
       console.log(data);
             //safeguard for nonsense words
