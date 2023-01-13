@@ -89,7 +89,7 @@ function movieSearch(e){
   });
 
 
-}
+}}
 
 //Cascading fetch functions
 function findRecentTitle(data){
