@@ -8,62 +8,81 @@ const movieDesc = document.querySelector(".movieDesc")
 const movieCast = document.querySelector(".movieCast")
 const wikiDesc = document.querySelector(".wikiDesc")
 const movieRating = document.querySelector(".movieRating")
-
+var mystoredmovie = "";
+var thetarget="";
+var mytitle = JSON.parse(localStorage.getItem("myTitle"));
+if (mytitle==undefined){
+  mytitle =[];
+}
 //Init Button
 searchBtn.addEventListener("click", movieSearch)
 
 //Main Function
 function movieSearch(e){
     e.preventDefault()
-    
+    //localStorage.clear();
+
     let targetSearch = searchInput.value
-    requestUrl = `http://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
+    thetarget = targetSearch
+    if (checkmylocalstorage(targetSearch)){
+      //we have the movie on the local
+      mystoredmovie = localStorage.getItem(targetSearch);
+      var lastMovie = JSON.parse(mystoredmovie);
+      console.log("This my thing "+ lastMovie.Title +" "+lastMovie.imdbID  +" "+ lastMovie.Year)
 
-    
-    //API EXAMPLES
-    //let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
-    //let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
-    //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
-    //let requestUrl =  "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Hulk&origin=*"
-    
-    fetch(requestUrl)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (data) {
-      console.log(data);
-            //safeguard for nonsense words
-      if (data.Error == "Too many results."){
-        let tryUrl = `http://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
-        fetch(tryUrl)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          console.log(data);
-          let title = data.Title
-          let imbd = data.imdbID
-          let year = data.Year
+      fetchRecentTitle(lastMovie.Title, lastMovie.imdbID, lastMovie.Year)
+      movieTitle.style.opacity = "100";
+      movieInfo.style.opacity = "100";
+
+    }
+    else { //we do not have the movie on the local storage
+      requestUrl = `http://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
+
+      console.log("here we should go")
+      //API EXAMPLES
+      //let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
+      //let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
+      //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
+      //let requestUrl =  "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Hulk&origin=*"
+      
+      fetch(requestUrl)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+              //safeguard for nonsense words
+        if (data.Error == "Too many results."){
+          let tryUrl = `http://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
+          fetch(tryUrl)
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            console.log(data);
+            let title = data.Title
+            let imbd = data.imdbID
+            let year = data.Year
+            movieTitle.style.opacity = "100";
+            movieInfo.style.opacity = "100";
+            fetchRecentTitle(title, imbd, year)
+          });
+          return
+        }
+        if (data.Response == "False" && data.Error != "Too many results."){
+          console.log("working");
+          movieTitle.innerText = "No Movie Found!";
           movieTitle.style.opacity = "100";
-          movieInfo.style.opacity = "100";
-          fetchRecentTitle(title, imbd, year)
-        });
-        return
-      }
-      if (data.Response == "False" && data.Error != "Too many results."){
-        console.log("working");
-        movieTitle.innerText = "No Movie Found!";
+          return;
+        }
+
+
+        findRecentTitle(data)
+        //unhide movie title and movie info.
         movieTitle.style.opacity = "100";
-        return;
-      }
-
-
-    findRecentTitle(data)
-    //unhide movie title and movie info.
-    movieTitle.style.opacity = "100";
-    movieInfo.style.opacity = "100";
-  });
-
+        movieInfo.style.opacity = "100";
+      });
+    }
 
 }
 
@@ -144,6 +163,9 @@ function fetchRecentTitle(title, id, date){
 }
 
 function ombdGenerate(data){
+
+  console.log("this is my console test "+ data.Title);
+  saveMovie(data)//check it on the chrome
   movieTitle.innerText = data.Title
   moviePoster.src = data.Poster
   movieDesc.innerText = data.Plot
@@ -217,4 +239,28 @@ function wikiGet(article, link){
     //write wiki extract to screen with click for more link
     wikiDesc.innerHTML = `${data.query.pages[wikiID].extract} <a href="${link}" target="_blank">${wikiLink}</a>`
   });
+}
+
+function checkmylocalstorage(data) {
+  if (localStorage.getItem(data)===null) {
+    console.log("my local is empty");
+    return 0;
+  }
+  else{
+    console.log("my local has stuff");
+    return 1;
+  }
+}
+
+
+//this function is for saving in the local storage (like the weather forecaster)
+//It is need it if this works with json
+function saveMovie(data){
+
+  localStorage.setItem(thetarget, JSON.stringify(data));
+  if (!mytitle.includes(data.Title)){
+    mytitle.push(data.Title)
+    localStorage.setItem("myTitle", JSON.stringify(mytitle));
+  }
+
 }
