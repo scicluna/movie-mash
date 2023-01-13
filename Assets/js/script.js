@@ -1,22 +1,28 @@
 //Select DOMS
 const searchInput = document.querySelector(".searchbar")
-const searchBtn = document.querySelector(".button")
+const searchBtn = document.querySelector(".searchBtn")
 const moviePoster = document.querySelector(".moviePoster")
 const movieTitle = document.querySelector(".movieTitle")
 const movieDesc = document.querySelector(".movieDesc")
 const movieCast = document.querySelector(".movieCast")
 const wikiDesc = document.querySelector(".wikiDesc")
 const movieRating = document.querySelector(".movieRating")
-var mystoredmovie = "";
-var thetarget="";
+
+
 var mytitle = JSON.parse(localStorage.getItem("myTitle"));
 if (mytitle==undefined){
   mytitle =[];
 }
+
+var thetarget="";
 let wikiRetry = false
+
+//Init foundation
+$(document).foundation()
 
 //Init Button
 searchBtn.addEventListener("click", movieSearch)
+historyList()
 
 //Main Function
 function movieSearch(e){
@@ -27,7 +33,7 @@ function movieSearch(e){
     thetarget = targetSearch
     if (checkmylocalstorage(targetSearch)){
       //we have the movie on the local
-      mystoredmovie = localStorage.getItem(targetSearch);
+      var mystoredmovie = localStorage.getItem(targetSearch);
       var lastMovie = JSON.parse(mystoredmovie);
       console.log("This my thing "+ lastMovie.Title +" "+lastMovie.imdbID  +" "+ lastMovie.Year)
 
@@ -269,6 +275,19 @@ function saveMovie(data){
   if (!mytitle.includes(data.Title)){
     mytitle.push(data.Title)
     localStorage.setItem("myTitle", JSON.stringify(mytitle));
+    historyList()
   }
 
+}
+
+function historyList(){
+  const historyList = document.querySelector(".history-list")
+
+  historyList.innerHTML = ""
+  for (let i=0; i<mytitle.length; i++){
+    let newList = document.createElement("button")
+    let listContent = mytitle[i]
+    newList.innerText = listContent
+    historyList.appendChild(newList)
+  }
 }

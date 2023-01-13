@@ -15,17 +15,35 @@
   <body>
     <header>
       <h1>Movie-Mash</h1>
+      <p>
+        <button class="button" id="history" data-open="history-modal">
+          Movie History
+        </button>
+      </p>
+      <div class="reveal" id="history-modal" data-reveal>
+        <h3>Past Searches</h3>
+        <p class="lead"></p>
+        <ul class="history-list"></ul>
+        <button
+          class="close-button"
+          data-close
+          aria-label="Close modal"
+          type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </header>
+
     <section>
       <form id="movieSearch">
         <input class="searchbar" type="text" id="search" />
-        <button class="button">Go</button>
+        <button class="searchBtn">Go</button>
       </form>
     </section>
     <h2 class="movieTitle">Movie Title</h2>
     <ul class="movieRating"></ul>
     <section id="movieInfo">
-      <img class="moviePoster" src="https://via.placeholder.com/300x445"/>
+      <img class="moviePoster" src="https://via.placeholder.com/300x445" />
       <div id="descriptions">
         <p class="movieCast"></p>
         <p class="movieDesc">
@@ -57,14 +75,24 @@
       </div>
     </section>
     <footer>
-      <a href="https://github.com/scicluna/movie-mash" target="_blank" id="githubLink"><img src="./Assets/images/github-logo.png"></a>
-        <div class="githubProfiles">
-          <a href="https://github.com/scicluna" target="_blank"><p>John</p></a>
-          <a href="https://github.com/cxrstings" target="_blank"><p>Corbin</p></a>
-          <a href="https://github.com/joy-johns" target="_blank"><p>Joycell</p></a>
-          <a href="https://github.com/bsmyth310" target="_blank"><p>Ben</p></a>
-    </div>
+      <a
+        href="https://github.com/scicluna/movie-mash"
+        target="_blank"
+        id="githubLink"
+        ><img src="./Assets/images/github-logo.png"
+      /></a>
+      <div class="githubProfiles">
+        <a href="https://github.com/scicluna" target="_blank"><p>John</p></a>
+        <a href="https://github.com/cxrstings" target="_blank"><p>Corbin</p></a>
+        <a href="https://github.com/joy-johns" target="_blank"
+          ><p>Joycell</p></a
+        >
+        <a href="https://github.com/bsmyth310" target="_blank"><p>Ben</p></a>
+      </div>
     </footer>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/js/foundation.min.js"
+      crossorigin="anonymous"></script>
   </body>
 </html>
