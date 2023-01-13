@@ -29,7 +29,7 @@ function movieSearch(e){
     fetch(requestUrl)
     .then(function (response) {
       return response.json();
-    })
+    })W
     .then(function (data) {
       console.log(data);
             //safeguard for nonsense words
@@ -54,6 +54,8 @@ function movieSearch(e){
         console.log("working");
         movieTitle.innerText = "No Movie Found!";
         movieTitle.style.opacity = "100";
+        movieInfo.style.opacity = "0";
+        movieRating.style.opacity = "0";
         return;
       }
 
@@ -62,6 +64,7 @@ function movieSearch(e){
     //unhide movie title and movie info.
     movieTitle.style.opacity = "100";
     movieInfo.style.opacity = "100";
+    movieRating.style.opacity = "100";
   });
 
 
@@ -148,7 +151,7 @@ function ombdGenerate(data){
   moviePoster.src = data.Poster
   movieDesc.innerText = data.Plot
   // Added the actors
-  movieCast.innerText = "Cast: " + data.Actors
+  movieCast.innerHTML = `<b>Cast:</b> ${data.Actors}`
 
   movieRating.innerHTML = ""
   for (let i=0; i<data.Ratings.length; i++){
