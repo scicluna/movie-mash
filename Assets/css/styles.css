@@ -3,7 +3,6 @@
     margin: 0;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 400;
-    font-size: 1.1em;
     color: rgba(255, 255, 255, 0.617);
 }
 
@@ -19,19 +18,58 @@ h2{
 }
 
 header {
+    position: relative;
     justify-content: center;
     align-items: center;
     text-align: center;
+    height: 8vh
+}
+
+#history{
+    position: absolute;
+    left: 0;
+    top: 0;
+    height:8vh;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+/*can restyle later */
+#history-modal{
+    display:flex;
+    flex-direction: column;
+    color:black;
+    text-align: center;
+    height:500px;
+    width:500px;
+}
+
+.history-list>button{
+    color:black;
+    cursor: pointer;
+}
+
+.history-list{
+    display: flex;
+    flex-direction: column;
+}
+
+#movieSearch {
+    display: flex;
+}
+
+.searchbar {
+    width: 90vw;
+}
+
+.searchBtn{
+    background-color:rgb(18 166 147);
+    width: 10vw;
+    height: 2.4375rem
 }
 
 header, footer {
     background-color: #1e554e;
     display:flex;
-}
-
-#movieSearch {
-    display: flex;
-    justify-content: center;
 }
 
 #movieInfo {
@@ -41,9 +79,10 @@ header, footer {
 }
 
 .moviePoster {
-    width: 20vw;
+    width: 25vw;
     padding-left: 10px;
     padding-right: 10px;
+    object-fit: contain;
 }
 
 .movieTitle {
@@ -52,8 +91,11 @@ header, footer {
     justify-content: center;
 }
 
-.movieDesc {
-    width: 70vw;
+#descriptions {
+    display: flex;
+    flex-direction: column;
+    width: 74vw;
+    padding-right: 1vw;
 }
 
 .movieRating {
@@ -66,19 +108,13 @@ header, footer {
     padding-left: 5px;
 }
 
-.searchbar {
-    width: 90vw;
-}
+
 
 .button {
     width: 10vw;
 }
 
-#descriptions {
-    display: flex;
-    flex-direction: column;
-    width: 65vw;
-}
+
 
 #ytReviews {
     display: flex;
