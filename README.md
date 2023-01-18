@@ -4,7 +4,7 @@
 
 The goal of Movie-Mash is to provide a user with as much information about any movie they search for as possible. This project helps the user determine whether a movie is worth watching or not, by providing them with a list of information about the movie.
 
-(enter finished screenshot here)
+![Movie-Mash!](Assets/images/Screenshot.png)
 
 ## Credits
 
