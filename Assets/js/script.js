@@ -288,6 +288,7 @@ function historyList(){
     let newList = document.createElement("button")
     let listContent = mytitle[i]
     newList.innerText = listContent
+    newList.classList.add("historybtn")
     historyList.appendChild(newList)
   }
 }
