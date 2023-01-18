@@ -135,7 +135,7 @@ function fetchRecentTitle(title, id, date){
   wikiSearch(title, date)
 
     //API key from youtube
-    let apiKey = "AIzaSyDBUWvIcwaPDXaZkjdnaNpmBzVa821rFFc"
+    let apiKey = "AIzaSyB8T6yJh1CgWmYMbQZwBiZ7kWR6pRbGNpI"
 
         let search = title + date
         console.log("working")
