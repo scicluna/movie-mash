@@ -88,6 +88,7 @@ header, footer {
     display: flex;
     opacity: 0;
     width: 100vw;
+    padding-bottom: 1vh;
 }
 
 .moviePoster {
@@ -130,8 +131,6 @@ header, footer {
 
 #ytReviews {
     display: flex;
-    width: 100vw;
-    height: 30vh;
 }
 
 footer {
@@ -155,4 +154,10 @@ footer {
 
 .githubProfiles>a{
     padding-left: 10px;
+}
+
+#videos{
+    display: flex;
+    justify-content: space-around;
+    width:100vw
 }
