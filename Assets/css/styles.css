@@ -31,26 +31,38 @@ header {
     top: 0;
     height:8vh;
     background-color: rgba(255, 255, 255, 0);
+    color: rgba(255, 255, 255, 0.617);
+}
+
+#history:hover{
+    color:rgba(255, 255, 255, 0.888);
 }
 
 /*can restyle later */
 #history-modal{
     display:flex;
     flex-direction: column;
-    color:black;
+    color: rgba(255, 255, 255, 0.617);
     text-align: center;
     height:500px;
     width:500px;
+    background-color: #1e554e;
+    border: 1px solid rgba(255, 255, 255, 0);
+    border-radius: 5%;
 }
 
 .history-list>button{
-    color:black;
+    color: rgba(255, 255, 255, 0.617);
     cursor: pointer;
 }
 
 .history-list{
     display: flex;
     flex-direction: column;
+}
+
+.historybtn:hover {
+    color: rgba(213, 209, 21, 0.691);
 }
 
 #movieSearch {
