@@ -43,7 +43,7 @@ function movieSearch(e){
 
     }
     else { //we do not have the movie on the local storage
-      requestUrl = `http://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
+      requestUrl = `https://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
 
       console.log("here we should go")
       //API EXAMPLES
@@ -60,7 +60,7 @@ function movieSearch(e){
         console.log(data);
               //safeguard for nonsense words
         if (data.Error == "Too many results."){
-          let tryUrl = `http://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
+          let tryUrl = `https://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
           fetch(tryUrl)
           .then(function (response) {
             return response.json();
@@ -119,7 +119,7 @@ function findRecentTitle(data){
 //Use the data we get from OMBD to search up more information on the movie
 function fetchRecentTitle(title, id, date){
     //Use the IMBD ID to more specifically look up the movie on OMBD
-    let recentUrl = `http://www.omdbapi.com/?i=${id}&apikey=83e0357b`
+    let recentUrl = `https://www.omdbapi.com/?i=${id}&apikey=83e0357b`
 
     fetch(recentUrl)
   .then(function (response) {
@@ -153,7 +153,7 @@ function fetchRecentTitle(title, id, date){
 
           //adds videos in separate ifram
             video = `
-            <iframe width="420" height="315" src="http://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+            <iframe width="420" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
             `
 
             $("#videos").append(video)
@@ -188,7 +188,7 @@ function ombdGenerate(data){
 
 function wikiSearch(title, date){
 
-  let wikiSearching = `http://en.wikipedia.org/w/api.php?action=opensearch&search=${title} ${date}{&format=json&origin=*`
+  let wikiSearching = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${title} ${date}{&format=json&origin=*`
   console.log(wikiSearching)
 
   fetch(wikiSearching)
