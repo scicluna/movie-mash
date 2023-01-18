@@ -7,6 +7,7 @@ const movieDesc = document.querySelector(".movieDesc")
 const movieCast = document.querySelector(".movieCast")
 const wikiDesc = document.querySelector(".wikiDesc")
 const movieRating = document.querySelector(".movieRating")
+const youTube = document.querySelector("#ytReviews")
 
 
 var mytitle = JSON.parse(localStorage.getItem("myTitle"));
@@ -30,72 +31,60 @@ function movieSearch(e){
     //localStorage.clear();
 
     let targetSearch = searchInput.value
-    thetarget = targetSearch
-    if (checkmylocalstorage(targetSearch)){
-      //we have the movie on the local
-      var mystoredmovie = localStorage.getItem(targetSearch);
-      var lastMovie = JSON.parse(mystoredmovie);
-      console.log("This my thing "+ lastMovie.Title +" "+lastMovie.imdbID  +" "+ lastMovie.Year)
 
-      fetchRecentTitle(lastMovie.Title, lastMovie.imdbID, lastMovie.Year)
-      movieTitle.style.opacity = "100";
-      movieInfo.style.opacity = "100";
+    requestUrl = `https://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
 
-    }
-    else { //we do not have the movie on the local storage
-      requestUrl = `https://www.omdbapi.com/?s=${targetSearch}&type=movie&apikey=83e0357b`
-
-      console.log("here we should go")
-      //API EXAMPLES
-      //let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
-      //let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
-      //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
-      //let requestUrl =  "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Hulk&origin=*"
-      
-      fetch(requestUrl)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        console.log(data);
-              //safeguard for nonsense words
-        if (data.Error == "Too many results."){
-          let tryUrl = `https://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
-          fetch(tryUrl)
-          .then(function (response) {
-            return response.json();
-          })
-          .then(function (data) {
-            console.log(data);
-            let title = data.Title
-            let imbd = data.imdbID
-            let year = data.Year
-            movieTitle.style.opacity = "100";
-            movieInfo.style.opacity = "100";
-            fetchRecentTitle(title, imbd, year)
-          });
-          return
-        }
-        if (data.Response == "False" && data.Error != "Too many results."){
-          console.log("working");
-          movieTitle.innerText = "No Movie Found!";
+    //API EXAMPLES
+    //let requestUrl = "https://www.googleapis.com/youtube/v3/search?type=video&q=hulk&key=AIzaSyCvlhMpYCLCu1uS68KJ7BSQv8rRG_XacUw"
+    //let requestUrl = "http://www.omdbapi.com/?i=tt10857160&apikey=83e0357b"
+    //let requestUrl =  "http://en.wikipedia.org/w/api.php?action=opensearch&search=Hulk&format=json&origin=*"
+    //let requestUrl =  "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=Hulk&origin=*"
+    
+    fetch(requestUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      //safeguard for "too many results"
+      if (data.Error == "Too many results."){
+        let tryUrl = `https://www.omdbapi.com/?t=${targetSearch}&apikey=83e0357b`
+        fetch(tryUrl)
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+          let title = data.Title
+          let imbd = data.imdbID
+          let year = data.Year
           movieTitle.style.opacity = "100";
-          movieInfo.style.opacity = "0";
-          movieRating.style.opacity = "0";
-          return;
-        }
-
-
+          movieInfo.style.opacity = "100";
+          movieRating.style.opacity = "100";
+          youTube.style.opacity = "100"
+          fetchRecentTitle(title, imbd, year)
+        });
+        return
+      }
+      //safeguard for nonsense words
+      if (data.Response == "False" && data.Error != "Too many results."){
+        movieTitle.innerText = "No Movie Found!";
+        movieTitle.style.opacity = "100";
+        movieInfo.style.opacity = "0";
+        movieRating.style.opacity = "0";
+        youTube.style.opacity = "0"
+        return;
+      }
 
     //unhide movie title and movie info.
     movieTitle.style.opacity = "100";
     movieInfo.style.opacity = "100";
     movieRating.style.opacity = "100";
+    youTube.style.opacity = "100"
     findRecentTitle(data)
   });
 
 
-}}
+}
 
 //Cascading fetch functions
 function findRecentTitle(data){
@@ -126,9 +115,7 @@ function fetchRecentTitle(title, id, date){
     return response.json();
   })
   .then(function (data) {
-
     ombdGenerate(data)
-
   });
 
   wikiRetry = false
@@ -137,37 +124,28 @@ function fetchRecentTitle(title, id, date){
     //API key from youtube
     let apiKey = "AIzaSyB8T6yJh1CgWmYMbQZwBiZ7kWR6pRbGNpI"
 
-        let search = title + date
-        console.log("working")
-        videoSearch(apiKey,search,5,)
+    let search = title + date
+    videoSearch(apiKey,search,5)
         
     //pulls data from search
-  function videoSearch(apiKey,search,maxResults,){
+  function videoSearch(apiKey,search,maxResults){
     $.get("https://www.googleapis.com/youtube/v3/search?key=" + apiKey + "&type=video&part=snippet&maxResults=" + maxResults + "&q=" + search,(data) => {
-        console.log(data);
-
         let video = '';
         // Removes videos after each search
-            $("#videos").html("");
+        $("#videos").html("");
         data.items.forEach(item => {
-
-          //adds videos in separate ifram
-            video = `
-            <iframe width="420" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
-            `
-
-            $("#videos").append(video)
+        //adds videos in separate ifram
+        video = `
+          <iframe width="420" height="315" src="https://www.youtube.com/embed/${item.id.videoId}" frameborder="0" allowfullscreen></iframe>
+        `
+        $("#videos").append(video)
         });
     })
-
   }
-
-
 }
 
 function ombdGenerate(data){
 
-  console.log("this is my console test "+ data.Title);
   saveMovie(data)//check it on the chrome
   movieTitle.innerText = data.Title
   moviePoster.src = data.Poster
@@ -187,17 +165,13 @@ function ombdGenerate(data){
 
 
 function wikiSearch(title, date){
-
   let wikiSearching = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${title} ${date}{&format=json&origin=*`
-  console.log(wikiSearching)
 
   fetch(wikiSearching)
   .then(function (response) {
     return response.json();
   })
   .then(function (data) {
-    console.log(data);
-
     let article;
 
     if (data[1][0] === undefined && (data[0].includes("20") || data[0].includes("19")) && wikiRetry === false){
@@ -212,13 +186,10 @@ function wikiSearch(title, date){
     }
 
     if(!data[1][0].includes(title) && wikiRetry === false){
-      console.log("no match")
       wikiRetry = true
       wikiSearch(title, "")
       return
     }
-
-
 
     for (let i=0; i<data.length; i++){
       if (data[i][0].includes("film") || data[i][0].includes("movie")){
@@ -230,7 +201,6 @@ function wikiSearch(title, date){
     let link = data[3][0]
 
     wikiGet(article, link)
-
   });
 
 }
@@ -238,18 +208,15 @@ function wikiSearch(title, date){
 function wikiGet(article, link){
   let wikiUrl = `https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=${article}&origin=*`
 
-    fetch(wikiUrl)
+  fetch(wikiUrl)
   .then(function (response) {
     return response.json();
   })
   .then(function (data) {
-    //do things with the data here
-    console.log(data);
     //gives us a wikipedia extract
     let wikiID = Object.getOwnPropertyNames(data.query.pages)[0]
     //sketchy, but can be used as a "click for more" type button
     let wikiLink = `en.wikipedia.org/wiki/${article}`
-    console.log(wikiLink)
     //write wiki extract to screen with click for more link
     wikiDesc.innerHTML = `${data.query.pages[wikiID].extract} <a href="${link}" target="_blank">${wikiLink}</a>`
   });
@@ -266,20 +233,18 @@ function checkmylocalstorage(data) {
   }
 }
 
-
 //this function is for saving in the local storage (like the weather forecaster)
 //It is need it if this works with json
 function saveMovie(data){
-
-  localStorage.setItem(thetarget, JSON.stringify(data));
+  localStorage.setItem(data.Title, JSON.stringify(data));
   if (!mytitle.includes(data.Title)){
     mytitle.push(data.Title)
     localStorage.setItem("myTitle", JSON.stringify(mytitle));
     historyList()
   }
-
 }
 
+//setting up our modal
 function historyList(){
   const historyList = document.querySelector(".history-list")
 
@@ -288,7 +253,20 @@ function historyList(){
     let newList = document.createElement("button")
     let listContent = mytitle[i]
     newList.innerText = listContent
+    newList.addEventListener("click", fetchHistory)
     newList.classList.add("historybtn")
     historyList.appendChild(newList)
   }
 }
+
+//handling modal clicks
+function fetchHistory(e){
+  let targetMovie = e.target.innerText
+  let movieData = JSON.parse(localStorage.getItem(targetMovie))
+  fetchRecentTitle(movieData.Title, movieData.imdbID, movieData.Year)
+  movieTitle.style.opacity = "100";
+  movieInfo.style.opacity = "100";
+  movieRating.style.opacity = "100";
+  youTube.style.opacity = "100"
+}
+
