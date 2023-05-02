@@ -2,7 +2,7 @@
 
 ## Description
 
-The goal of Movie-Mash is to provide a user with as much information about any movie they search for as possible. This project helps the user determine whether a movie is worth watching or not, by providing them with a list of information about the movie.
+Movie-Mash aims to offer users comprehensive details about any film they search, enabling them to make informed decisions on whether a movie is worth their time. As our debut project at the EdX MSU Full Stack Bootcamp, this platform was crafted with dedication using vanilla JS, CSS, and HTML. Movie-Mash showcases sophisticated API calls and logic to transform basic search queries into a wealth of movie information.
 
 ![Movie-Mash!](Assets/images/Screenshot.png)
 
@@ -18,6 +18,10 @@ Ben Smyth - [GitHub](https://github.com/bsmyth310)
 
 <br>
 </br>
+
+## Usage
+  
+Just follow the link and enjoy: [scicluna.github.io/movie-mash/](https://scicluna.github.io/movie-mash/)
 
 ## License
 
