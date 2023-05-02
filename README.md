@@ -16,9 +16,6 @@ Joycell Johnson - [GitHub](https://github.com/Joy-Johns)
 
 Ben Smyth - [GitHub](https://github.com/bsmyth310)
 
-<br>
-</br>
-
 ## Usage
   
 Just follow the link and enjoy: [scicluna.github.io/movie-mash/](https://scicluna.github.io/movie-mash/)
